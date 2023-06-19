@@ -1,7 +1,6 @@
 import numpy as np
 
 
-
 def train(network, X_train, y_train, X_val, y_val,
           batch_size, epochs, report_after=10, decay_after=50, 
           learning_rate = 1e-3, learning_rate_decay=0.99):

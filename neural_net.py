@@ -1,5 +1,6 @@
 import numpy as np
 from layers import Linear, LinearAndReLU, Softmax
+import pickle
 
 
 """
@@ -76,3 +77,20 @@ class NeuralNetwork:
 
         # Return the cost
         return cost
+    
+    @staticmethod
+    def save(model):
+        """
+        Save the neural network into a pickle file
+        """
+        with open("model/model.pickle", "wb") as f:
+            pickle.dump(model, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+    @staticmethod
+    def load():
+        """
+        Load the model from a pickle file
+        """
+        with open("model/model.pickle", "rb") as f:
+            model = pickle.load(f)
+        return model

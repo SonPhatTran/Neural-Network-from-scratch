@@ -15,6 +15,9 @@ net = NeuralNetwork(
 # Train the network
 training_costs, val_costs = train(net, X_train, y_train, X_val, y_val, batch_size=200, epochs=100)
 
+# Save model
+NeuralNetwork.save(net)
+
 # Render the cost
 fig, ax = plt.subplots()
 ax.plot(training_costs, color="blue", label="train")
