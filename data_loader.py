@@ -2,6 +2,7 @@ import numpy as np
 import struct
 from array import array
 from os.path  import join
+from sklearn.model_selection import train_test_split
 
 '''
 Define a class for loading the MNIST dataset from the files
@@ -76,4 +77,9 @@ mnist = MnistDataloader(
     test_images_filepath=TEST_IMAGES_FILE_PATH,
     test_labels_filepath=TEST_LABELS_FILE_PATH
 )
+
+# Split into train and test set
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+# Split into train and validation set
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.05, stratify=y_train)

@@ -5,14 +5,15 @@ import numpy as np
 Define a class for the linear layer
 """
 class Linear:
-    def __init__(self, in_features, out_features, regularization=0.0):
+    def __init__(self, in_features, out_features, regularization=0.0, learning_rate=3e-3):
         """
         Initialize the model's parameters
         """
         # Create the weight (with Xavier initialization) and bias
-        self.W = np.random.randn(in_features, out_features) * np.sqrt(2 / (in_features + out_features))
+        self.W = np.random.randn(in_features, out_features) / 10 # * np.sqrt(2 / in_features)
         self.b = np.zeros((out_features,))
         self.reg = regularization
+        self.lr = learning_rate
 
     def forward(self, X):
         """
@@ -21,7 +22,7 @@ class Linear:
         """
         self.cache = (X,)
         result = X @ self.W + self.b
-        return result + 0.5 * self.reg * np.sum(np.power(self.W, 2))
+        return result
 
     def backward(self, dLoss):
         """
@@ -37,8 +38,8 @@ class Linear:
         dX = dLoss @ self.W.T
 
         # Update the weight and bias
-        self.W -= dW
-        self.b -= db
+        self.W -= self.lr * dW
+        self.b -= self.lr * db
 
         # Return the gradients
         return dX, dW, db
@@ -76,11 +77,11 @@ class ReLU:
 Define a layer that combines the Linear layer and the ReLU layer
 """
 class LinearAndReLU:
-    def __init__(self, in_features, out_features, regularization):
+    def __init__(self, in_features, out_features, regularization, learning_rate):
         """
         Create two layers
         """
-        self.linear = Linear(in_features, out_features, regularization)
+        self.linear = Linear(in_features, out_features, regularization, learning_rate)
         self.relu = ReLU()
 
     def forward(self, X):
@@ -119,7 +120,7 @@ class Softmax:
 
         # Choose the probabability
         P = D[np.arange(N), y]
-        self.cache = (P,)
+        self.cache = (D,)
 
         # Calculate the log probability
         L = -np.log(P)
@@ -133,14 +134,14 @@ class Softmax:
         Perform the backward pass of the Softmax layer
         """
         # Get the cache
-        P = self.cache[0]
+        D = self.cache[0]
         
         # Get the dimension
-        N, C = P.shape
+        N, C = D.shape
 
         # Calculate the gradient
-        dScores = P
-        dScores[np.arange(P.shape[0]), y] -= 1
+        dScores = D
+        dScores[np.arange(N), y] -= 1
         dScores = (1 / N) * dScores
 
         # Return the gradient
