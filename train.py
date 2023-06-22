@@ -34,7 +34,7 @@ def train(network, X_train, y_train, X_val, y_val,
         X_batches = np.array_split(X_shuffled, batch_size)
         y_batches = np.array_split(y_shuffled, batch_size)
 
-        # Forward pass
+        # Forward pass and Backward pass
         for X_batch, y_batch in zip(X_batches, y_batches):
             # Perform the forward pass
             cost = network.forward(X_batch, y_batch, training=True)

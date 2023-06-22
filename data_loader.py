@@ -85,7 +85,7 @@ mnist = MnistDataloader(
 # Split into train and validation set
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.05, stratify=y_train)
 
-# Normalized the train, validation and test dataset
+# Standardize the train, validation and test dataset
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
